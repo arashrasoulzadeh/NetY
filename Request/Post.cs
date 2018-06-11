@@ -9,13 +9,26 @@ using UnityEngine.Networking;
 
 public class Post : Request
 {
-    public Post init(string url,string body){
+    public Post init(string url){
         this.requestUrl = url;
-        this.requestBody = body;
         Engine.getInstance().triggerInit();
 
         return this;
     }
+
+    public Post setBody(string body)
+    {
+        this.requestBody = body;
+        return this;
+    }
+
+    public Post setBody(Model body)
+    {
+        this.requestBody = body.toString();
+        return this;
+    }
+
+
 
     public Post send()
     {
