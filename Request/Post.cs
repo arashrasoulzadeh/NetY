@@ -48,9 +48,16 @@ public class Post : Request
         www = new WWW(url, formData, postHeader);
  
         yield return new WaitUntil(() => www.isDone);
-        this.onResponse(www.text);
+        int code = getResponseCode(www);
+        if (code == 200)
+        {
+            this.onResponse(www.text);
 
-        Engine.getInstance().triggerDone();
+            Engine.getInstance().triggerDone();
+        }else{
+            this.onFailed(code, www.text);
+            Engine.getInstance().triggerFailed();
+        }
 
         Destroy(this);
 

@@ -23,4 +23,47 @@ public class Request: MonoBehaviour
     }
 
 
+    public static int getResponseCode(WWW request)
+    {
+        int ret = 0;
+        if (request.responseHeaders == null)
+        {
+            Debug.LogError("no response headers.");
+        }
+        else
+        {
+            if (!request.responseHeaders.ContainsKey("STATUS"))
+            {
+                Debug.LogError("response headers has no STATUS.");
+            }
+            else
+            {
+                ret = parseResponseCode(request.responseHeaders["STATUS"]);
+            }
+        }
+
+        return ret;
+    }
+
+    public static int parseResponseCode(string statusLine)
+    {
+        int ret = 0;
+
+        string[] components = statusLine.Split(' ');
+        if (components.Length < 3)
+        {
+            Debug.LogError("invalid response status: " + statusLine);
+        }
+        else
+        {
+            if (!int.TryParse(components[1], out ret))
+            {
+                Debug.LogError("invalid response code: " + components[1]);
+            }
+        }
+
+        return ret;
+    }
+
+
 }
