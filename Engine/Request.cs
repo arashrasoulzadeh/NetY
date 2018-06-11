@@ -11,6 +11,7 @@ public class Request: MonoBehaviour
     public GameObject father;
     public ResponseCallback done;
     public ErrorCallback error;
+    public int retryCount = 0;
 
     public void onResponse(string response)
     {

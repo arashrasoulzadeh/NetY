@@ -67,12 +67,20 @@ public class Post : Request
             this.onResponse(www.text);
 
             Engine.getInstance().triggerDone();
+            Destroy(this);
+
         }else{
             this.onFailed(code, www.text);
             Engine.getInstance().triggerFailed();
+            if (retryCount>0){
+                retryCount--;
+                this.send();
+            }else{
+                Destroy(this);
+
+            }
         }
 
-        Destroy(this);
 
     }
 
@@ -89,6 +97,12 @@ public class Post : Request
     public Post failed(ErrorCallback callback)
     {
         this.error = callback;
+        return this;
+    }
+
+    public Post retry(int times)
+    {
+        this.retryCount = times;
         return this;
     }
 
