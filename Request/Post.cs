@@ -9,6 +9,10 @@ using UnityEngine.Networking;
 
 public class Post : Request
 {
+    /// <summary>
+    /// initialize post request.
+    /// </summary>
+    /// <param name="url">url of request</param>
     public Post init(string url){
         this.requestUrl = url;
         Engine.getInstance().triggerInit();
@@ -16,12 +20,20 @@ public class Post : Request
         return this;
     }
 
+    /// <summary>
+    /// set body of the request.
+    /// </summary>
+    /// <param name="body">string of request body</param>
     public Post setBody(string body)
     {
         this.requestBody = body;
         return this;
     }
 
+    /// <summary>
+    /// initialize post request.
+    /// </summary>
+    /// <param name="body">implementation of <c>Model</c> of request body</param>
     public Post setBody(Model body)
     {
         this.requestBody = body.toString();
@@ -29,7 +41,9 @@ public class Post : Request
     }
 
 
-
+    /// <summary>
+    /// send the request.
+    /// </summary>
     public Post send()
     {
         StartCoroutine(PostRequest(requestUrl, requestBody));
@@ -37,7 +51,9 @@ public class Post : Request
 
     }
   
-
+    /// <summary>
+    /// debug request in console.
+    /// </summary>
     public Post debug()
     {
         print(" Url=> "+this.requestUrl+"\nBody=>"+this.requestBody);
@@ -45,7 +61,7 @@ public class Post : Request
     }
 
 
-    public IEnumerator PostRequest(string url, string bodyJsonString)
+     IEnumerator PostRequest(string url, string bodyJsonString)
     {
         Engine.getInstance().triggerStart();
         print("running : " + url);
@@ -86,20 +102,29 @@ public class Post : Request
 
 
 
-
+    /// <summary>
+    /// response of request callback
+    /// </summary>
+    /// <param name="callback"><c>ResponseCallback</c> object</param>
     public Post next(ResponseCallback callback)
     {
         this.done = callback;
         return this;
     }
 
-
+    /// <summary>
+    /// response of request callback.when request is failed
+    /// </summary>
+    /// <param name="callback"><c>ErrorCallback</c> object</param>
     public Post failed(ErrorCallback callback)
     {
         this.error = callback;
         return this;
     }
-
+    /// <summary>
+    /// retry times (on failed)
+    /// </summary>
+    /// <param name="times">times</param>
     public Post retry(int times)
     {
         this.retryCount = times;
@@ -107,7 +132,10 @@ public class Post : Request
     }
 
 
-
+    /// <summary>
+    /// required , attach to gameobject
+    /// </summary>
+    /// <param name="gameObject"><c>GameObject</c> to attach</param>
     public Post attach(GameObject gameObject)
     {
         this.father = gameObject;

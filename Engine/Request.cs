@@ -12,18 +12,28 @@ public class Request: MonoBehaviour
     public ResponseCallback done;
     public ErrorCallback error;
     public int retryCount = 0;
-
+    /// <summary>
+    /// response of request callback.when request is completed.
+    /// </summary>
+    /// <param name="response">response</param>
     public void onResponse(string response)
     {
          done.Invoke(response);
     }
-
+    /// <summary>
+    /// response of request callback.
+    /// </summary>
+    /// <param name="code">status code</param>
+    /// <param name="response">response</param>
     public void onFailed(int code,string response)
     {
          error.Invoke(code,response);
     }
 
-
+    /// <summary>
+    /// returns status code
+    /// </summary>
+    /// <param name="request"><c>WWW</c> object to get status code</param>
     public static int getResponseCode(WWW request)
     {
         int ret = 0;
