@@ -15,7 +15,7 @@ public class Post : Request
     /// <param name="url">url of request</param>
     public Post init(string url){
         this.requestUrl = url;
-        Engine.getInstance().triggerInit();
+        Engine.getInstance().triggerInit(this.GetInstanceID(),url);
 
         return this;
     }
@@ -63,7 +63,7 @@ public class Post : Request
 
      IEnumerator PostRequest(string url, string bodyJsonString)
     {
-        Engine.getInstance().triggerStart();
+        Engine.getInstance().triggerStart(this.GetInstanceID());
         print("running : " + url);
         yield return new WaitForEndOfFrame();
 
@@ -82,12 +82,12 @@ public class Post : Request
         {
             this.onResponse(www.text);
 
-            Engine.getInstance().triggerDone();
+            Engine.getInstance().triggerDone(this.GetInstanceID());
             Destroy(this);
 
         }else{
             this.onFailed(code, www.text);
-            Engine.getInstance().triggerFailed();
+            Engine.getInstance().triggerFailed(this.GetInstanceID());
             if (retryCount>0){
                 retryCount--;
                 this.send();

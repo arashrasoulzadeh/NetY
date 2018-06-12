@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Engine{
@@ -16,6 +17,10 @@ public class Engine{
     //private variables
     int activeRequestsCount=0, inactiveRequestsCount=0, doneRequests=0, failedRequests=0;
     //public variables
+    public List<RequestStatus> requestLog=new List<RequestStatus>();
+
+
+  
 
 
     //geters
@@ -36,60 +41,75 @@ public class Engine{
         return this.doneRequests;
     }
 
+    public int getStatusIndexById(int id)
+    {
+        for (int i = 0; i < requestLog.Count;i++){
+            if (requestLog[i].id == id){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     //setters
-    public void increaseActiveRequestsCount()
+    void increaseActiveRequestsCount()
     {
         this.activeRequestsCount++;
 
     }
-    public void increaseInActiveRequestsCount()
+    void increaseInActiveRequestsCount()
     {
         this.inactiveRequestsCount++;
 
     }
-    public void increaseFailedRequestsCount()
+    void increaseFailedRequestsCount()
     {
         this.failedRequests++;
 
     }
-    public void increaseDoneRequestsCount()
+    void increaseDoneRequestsCount()
     {
         this.doneRequests++;
 
     }
 
-    public void decreaseActiveRequestsCount()
+    void decreaseActiveRequestsCount()
     {
         this.activeRequestsCount--;
     }
-    public void decreaseInActiveRequestsCount()
+    void decreaseInActiveRequestsCount()
     {
         this.inactiveRequestsCount--;
     }
 
-    public void triggerDone()
+    public void triggerDone(int id)
     {
+        this.requestLog[getStatusIndexById(id)].setStatus(RequestStatus.Status.done);
         this.increaseDoneRequestsCount();
         this.decreaseActiveRequestsCount();
     }
-
-    public void triggerFailed()
+    
+    public void triggerFailed(int id)
     {
+        this.requestLog[getStatusIndexById(id)].setStatus(RequestStatus.Status.failed);
         this.increaseFailedRequestsCount();
         this.decreaseActiveRequestsCount();
 
     }
 
-    public void triggerStart()
+    public void triggerStart(int id)
     {
+        this.requestLog[getStatusIndexById(id)].setStatus(RequestStatus.Status.pending);
         this.increaseActiveRequestsCount();
         this.decreaseInActiveRequestsCount();
 
     }
-    public void triggerInit()
+    public void triggerInit(int id,string url)
     {
+        this.requestLog.Add(new RequestStatus(id,url));
         this.increaseInActiveRequestsCount();
+        this.requestLog[getStatusIndexById(id)].setStatus(RequestStatus.Status.init);
 
     }
 
