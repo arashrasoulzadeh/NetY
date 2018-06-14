@@ -2,33 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Request: MonoBehaviour
+public class BaseRequest: MonoBehaviour
 {
     public string requestBody, requestUrl, responseBody;
-    public delegate void ResponseCallback(string response);
-    public delegate void ErrorCallback(int code,string response);
-
     public GameObject father;
-    public ResponseCallback done;
-    public ErrorCallback error;
-    public int retryCount = 0;
-    /// <summary>
-    /// response of request callback.when request is completed.
-    /// </summary>
-    /// <param name="response">response</param>
-    public void onResponse(string response)
+    public int retryCount { get; set; }
+    public string classType;
+
+
+    public  BaseRequest()
     {
-         done.Invoke(response);
+
     }
-    /// <summary>
-    /// response of request callback.
-    /// </summary>
-    /// <param name="code">status code</param>
-    /// <param name="response">response</param>
-    public void onFailed(int code,string response)
-    {
-         error.Invoke(code,response);
-    }
+     
 
     /// <summary>
     /// returns status code
@@ -55,6 +41,10 @@ public class Request: MonoBehaviour
 
         return ret;
     }
+    /// <summary>
+    /// get status line 
+    /// </summary>
+    /// <param name="statusLine">string status line</param>
 
     public static int parseResponseCode(string statusLine)
     {
